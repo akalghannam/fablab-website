@@ -9,16 +9,25 @@ import { ArrowLeft, Zap, Users, CalendarCheck } from 'lucide-react'
 import type { User } from '@/types'
 
 export default async function HomePage() {
-  const supabase = createClient()
-  const { data: { user: authUser } } = await supabase.auth.getUser()
-
   let currentUser: User | null = null
-  if (authUser) {
-    const { data } = await supabase.from('users').select('*').eq('id', authUser.id).single()
-    currentUser = data
+  let upcomingEvents: Awaited<ReturnType<typeof getUpcomingEvents>> = []
+
+  try {
+    const supabase = createClient()
+    const { data: { user: authUser } } = await supabase.auth.getUser()
+    if (authUser) {
+      const { data } = await supabase.from('users').select('*').eq('id', authUser.id).single()
+      currentUser = data
+    }
+  } catch {
+    // Supabase unavailable — render page without user session
   }
 
-  const upcomingEvents = await getUpcomingEvents(3)
+  try {
+    upcomingEvents = await getUpcomingEvents(3)
+  } catch {
+    // Events unavailable — render page without events list
+  }
 
   return (
     <div className="min-h-screen flex flex-col">

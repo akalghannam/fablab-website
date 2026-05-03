@@ -16,17 +16,21 @@ export async function getEvents() {
 }
 
 export async function getUpcomingEvents(limit = 3) {
-  const supabase = createClient()
-  const today = new Date().toISOString().split('T')[0]
+  try {
+    const supabase = createClient()
+    const today = new Date().toISOString().split('T')[0]
 
-  const { data } = await supabase
-    .from('events')
-    .select('*')
-    .gte('date', today)
-    .order('date', { ascending: true })
-    .limit(limit)
+    const { data } = await supabase
+      .from('events')
+      .select('*')
+      .gte('date', today)
+      .order('date', { ascending: true })
+      .limit(limit)
 
-  return data ?? []
+    return data ?? []
+  } catch {
+    return []
+  }
 }
 
 export async function getEvent(id: string) {
