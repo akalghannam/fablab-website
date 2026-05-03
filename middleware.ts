@@ -2,86 +2,34 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  // Guard: if env vars are missing, let the request through — pages will
-  // show their own error state rather than the whole edge runtime crashing.
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  let response = NextResponse.next({ request })
 
-  if (!supabaseUrl || !supabaseKey) {
-    return NextResponse.next({ request })
-  }
-
-  let supabaseResponse = NextResponse.next({ request })
-
-  const supabase = createServerClient(supabaseUrl, supabaseKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll()
-      },
-      setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
-        cookiesToSet.forEach(({ name, value }) =>
-          request.cookies.set(name, value)
-        )
-        supabaseResponse = NextResponse.next({ request })
-        cookiesToSet.forEach(({ name, value, options }) =>
-          supabaseResponse.cookies.set(name, value, options)
-        )
-      },
-    },
-  })
-
-  const pathname = request.nextUrl.pathname
-
-  // Wrap all Supabase calls so a network/auth error never crashes the middleware
   try {
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
-
-    // If Supabase itself errored (bad key, network), let the request pass
-    if (userError && userError.message !== 'Auth session missing!') {
-      return supabaseResponse
-    }
-
-    const isProtected = pathname.startsWith('/dashboard') || pathname.startsWith('/admin')
-    const isAuthPage = pathname === '/login' || pathname === '/signup'
-
-    // Unauthenticated user hitting a protected route → redirect to login
-    if (!user && isProtected) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/login'
-      url.searchParams.set('redirect', pathname)
-      return NextResponse.redirect(url)
-    }
-
-    if (user) {
-      // Fetch role once and reuse for both checks below
-      const { data: userData } = await supabase
-        .from('users')
-        .select('role')
-        .eq('id', user.id)
-        .single()
-
-      const role = userData?.role ?? 'member'
-
-      // Non-admin hitting /admin → redirect to dashboard
-      if (pathname.startsWith('/admin') && role !== 'admin') {
-        const url = request.nextUrl.clone()
-        url.pathname = '/dashboard'
-        return NextResponse.redirect(url)
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
+      {
+        cookies: {
+          getAll: () => request.cookies.getAll(),
+          setAll: (toSet: { name: string; value: string; options: CookieOptions }[]) => {
+            toSet.forEach(({ name, value }) => request.cookies.set(name, value))
+            response = NextResponse.next({ request })
+            toSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options)
+            )
+          },
+        },
       }
+    )
 
-      // Logged-in user hitting login/signup → redirect to their home
-      if (isAuthPage) {
-        const url = request.nextUrl.clone()
-        url.pathname = role === 'admin' ? '/admin' : '/dashboard'
-        return NextResponse.redirect(url)
-      }
-    }
+    // Only purpose: refresh the session token so it doesn't expire.
+    // Route protection is handled inside each layout via server-side redirects.
+    await supabase.auth.getUser()
   } catch {
-    // Any unexpected error (timeout, parse failure, etc.) → pass through
-    return supabaseResponse
+    // Never let middleware crash — always pass the request through.
   }
 
-  return supabaseResponse
+  return response
 }
 
 export const config = {
