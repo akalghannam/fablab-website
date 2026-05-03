@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Sansation font — place files in /public/fonts/ */
+@font-face {
+  font-family: 'Sansation';
+  src: url('/fonts/Sansation_Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sansation';
+  src: url('/fonts/Sansation_Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sansation';
+  src: url('/fonts/Sansation_Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Hacen Tunisia Arabic font — place file in /public/fonts/ */
+@font-face {
+  font-family: 'HacenTunisia';
+  src: url('/fonts/HacenTunisia.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --brand-dark: #1b3541;
+    --brand-darker: #0e0e0e;
+    --brand-orange: #ff8a00;
+    --brand-blue: #4e97b7;
+    --brand-gray: #4b4b4b;
+  }
+
+  html {
+    direction: rtl;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #1b3541;
+    color: #ffffff;
+    font-family: 'Cairo', 'HacenTunisia', sans-serif;
+    min-height: 100vh;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .glow-orange {
+    box-shadow: 0 0 60px 20px rgba(255, 138, 0, 0.15);
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 60px 20px rgba(78, 151, 183, 0.15);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+  }
+
+  .btn-primary {
+    @apply bg-brand-orange text-white font-semibold px-6 py-2.5 rounded-lg
+           hover:bg-orange-500 active:scale-95 transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-brand-blue text-white font-semibold px-6 py-2.5 rounded-lg
+           hover:bg-blue-500 active:scale-95 transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply border border-white/20 text-white font-semibold px-6 py-2.5 rounded-lg
+           hover:bg-white/10 active:scale-95 transition-all duration-200;
+  }
+
+  .input-field {
+    @apply w-full bg-white/5 border border-white/15 rounded-lg px-4 py-3 text-white
+           placeholder-white/30 focus:outline-none focus:border-brand-blue focus:ring-1
+           focus:ring-brand-blue transition-colors duration-200;
+  }
+
+  .label-text {
+    @apply block text-sm text-white/70 mb-1.5 font-medium;
+  }
+
+  .page-container {
+    @apply container mx-auto px-4 py-8 max-w-7xl;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold text-white mb-6;
+  }
+
+  .english-text {
+    font-family: 'Sansation', 'Inter', sans-serif;
+    direction: ltr;
+    unicode-bidi: embed;
+  }
+}
+
+@layer utilities {
+  .text-gradient-orange {
+    background: linear-gradient(135deg, #ff8a00, #ffb347);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-blue {
+    background: linear-gradient(135deg, #4e97b7, #7ab8d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .border-glow-orange {
+    border-color: rgba(255, 138, 0, 0.5);
+    box-shadow: 0 0 15px rgba(255, 138, 0, 0.2);
+  }
+
+  .border-glow-blue {
+    border-color: rgba(78, 151, 183, 0.5);
+    box-shadow: 0 0 15px rgba(78, 151, 183, 0.2);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1b3541;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4e97b7;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff8a00;
+}
+
+/* Star rating styles */
+.star-rating input[type='radio'] {
+  display: none;
+}
+
+.star-rating label {
+  cursor: pointer;
+  color: #4b4b4b;
+  font-size: 1.8rem;
+  transition: color 0.2s;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input[type='radio']:checked ~ label {
+  color: #ff8a00;
+}
