@@ -49,7 +49,7 @@ export default async function HomePage() {
           </h1>
 
           <p className="english-text text-brand-orange text-lg md:text-2xl font-sansation tracking-[0.3em] mb-4 uppercase">
-            WE PLAN. WE CREATE
+            WE PLAN. WE FABRICATE
           </p>
 
           <p className="text-white/60 text-lg md:text-xl max-w-xl mx-auto mb-10 leading-relaxed">

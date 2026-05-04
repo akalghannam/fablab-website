@@ -3,7 +3,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'FabLab Club',
-  description: 'WE PLAN. WE CREATE — نادي فاب لاب للإبداع والتصنيع الرقمي',
+  description: 'WE PLAN. WE FABRICATE — نادي فاب لاب للإبداع والتصنيع الرقمي',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
 }
 

@@ -76,7 +76,7 @@ export default function SignupPage() {
           <div className="flex flex-col items-center gap-3 mb-8">
             <Logo width={150} height={52} />
             <span className="english-text text-brand-orange text-xs tracking-[0.25em] font-sansation">
-              WE PLAN. WE CREATE
+              WE PLAN. WE FABRICATE
             </span>
           </div>
 

@@ -48,7 +48,7 @@ Deno.serve(async (req) => {
     <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #1b3541; color: #ffffff; padding: 40px; border-radius: 16px;">
       <div style="text-align: center; margin-bottom: 32px;">
         <h1 style="color: #ff8a00; font-size: 28px; margin: 0;">FabLab Club</h1>
-        <p style="color: #4e97b7; font-size: 12px; letter-spacing: 3px; margin-top: 4px;">WE PLAN. WE CREATE</p>
+        <p style="color: #4e97b7; font-size: 12px; letter-spacing: 3px; margin-top: 4px;">WE PLAN. WE FABRICATE</p>
       </div>
 
       <h2 style="color: #ffffff; margin-bottom: 8px;">تم تسجيل حضورك بنجاح! 🎉</h2>

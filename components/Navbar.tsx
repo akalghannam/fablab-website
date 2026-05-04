@@ -31,7 +31,7 @@ export function Navbar({ user }: NavbarProps) {
           <Link href="/" className="flex items-center gap-3 flex-shrink-0">
             <Logo width={120} height={42} />
             <span className="hidden sm:block text-[10px] font-sansation text-brand-orange tracking-[0.2em] uppercase english-text">
-              WE PLAN. WE CREATE
+              WE PLAN. WE FABRICATE
             </span>
           </Link>
 

@@ -13,7 +13,7 @@ export function Footer() {
               نادي فاب لاب — مساحة للإبداع والتصنيع الرقمي والابتكار
             </p>
             <span className="english-text text-brand-orange text-xs tracking-widest font-sansation">
-              WE PLAN. WE CREATE
+              WE PLAN. WE FABRICATE
             </span>
           </div>
 

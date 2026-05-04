@@ -224,4 +224,4 @@ fablab-website/
 
 ---
 
-*FabLab Club — WE PLAN. WE CREATE*
+*FabLab Club — WE PLAN. WE FABRICATE*
