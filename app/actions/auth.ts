@@ -17,26 +17,33 @@ export async function signIn(formData: FormData) {
 
   const { data: userData } = await supabase
     .from('users')
-    .select('role')
+    .select('role, is_super_admin, account_type')
     .eq('id', user.id)
     .single()
 
   revalidatePath('/', 'layout')
-  return { role: userData?.role ?? 'member' }
+
+  if (userData?.is_super_admin) return { redirectTo: '/super-admin' }
+  if (userData?.role === 'admin')  return { redirectTo: '/admin' }
+  if (userData?.account_type === 'member') return { redirectTo: '/dashboard' }
+
+  // Audience accounts land on home — they have no member portal
+  return { redirectTo: '/' }
 }
 
 export async function signUp(formData: FormData) {
   const supabase = createClient()
-  const email = formData.get('email') as string
+  const email    = formData.get('email') as string
   const password = formData.get('password') as string
   const fullName = formData.get('full_name') as string
-  const phone = formData.get('phone') as string
+  const phone    = formData.get('phone') as string
 
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      data: { full_name: fullName, account_type: 'audience' },
     },
   })
 
@@ -48,12 +55,13 @@ export async function signUp(formData: FormData) {
   }
 
   if (data.user) {
-    await supabase.from('users').insert({
+    await supabase.from('users').upsert({
       id: data.user.id,
       email,
       full_name: fullName || null,
       phone: phone || null,
-      role: 'member',
+      account_type: 'audience',
+      role: 'guest',
     })
   }
 

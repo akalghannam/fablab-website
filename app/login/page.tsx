@@ -30,11 +30,7 @@ export default function LoginPage() {
       return
     }
 
-    if (result?.role === 'admin') {
-      router.push('/admin')
-    } else {
-      router.push('/dashboard')
-    }
+    router.push(result?.redirectTo ?? '/')
     router.refresh()
   }
 
@@ -43,9 +39,7 @@ export default function LoginPage() {
       <GlowBackground variant="auth" />
 
       <div className="relative z-10 w-full max-w-md px-4">
-        {/* Card */}
         <div className="glass-card p-8 md:p-10">
-          {/* Logo */}
           <div className="flex flex-col items-center gap-3 mb-8">
             <Logo width={150} height={52} />
             <span className="english-text text-brand-orange text-xs tracking-[0.25em] font-sansation">
@@ -53,9 +47,7 @@ export default function LoginPage() {
             </span>
           </div>
 
-          <h1 className="text-2xl font-bold text-white text-center mb-2">
-            تسجيل الدخول
-          </h1>
+          <h1 className="text-2xl font-bold text-white text-center mb-2">تسجيل الدخول</h1>
           <p className="text-white/40 text-sm text-center mb-8">
             أدخل بياناتك للوصول إلى حسابك
           </p>
@@ -83,8 +75,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setShowPass(!showPass)}
-                className="absolute left-3 top-9 text-white/40 hover:text-white/70 transition-colors"
-              >
+                className="absolute left-3 top-9 text-white/40 hover:text-white/70 transition-colors">
                 {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
@@ -108,7 +99,7 @@ export default function LoginPage() {
           </form>
 
           <p className="text-center text-white/40 text-sm mt-6">
-            ليس لديك حساب؟{' '}
+            تريد التسجيل في فعالية؟{' '}
             <Link href="/signup" className="text-brand-blue hover:text-blue-400 transition-colors font-medium">
               إنشاء حساب
             </Link>

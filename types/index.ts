@@ -1,6 +1,26 @@
 export type UserRole = 'admin' | 'member' | 'guest'
+export type AccountType = 'audience' | 'member' | 'super_admin'
 export type ReportType = 'check-in' | 'check-out'
 export type EquipmentCondition = 'excellent' | 'good' | 'fair' | 'poor'
+export type LabStatusValue = 'red' | 'yellow' | 'green'
+export type Permission =
+  | 'CREATE_MEMBERS'
+  | 'CHANGE_LAB_STATUS'
+  | 'MANAGE_EVENTS'
+  | 'VIEW_AUDIENCE'
+
+export const PERMISSION_LABELS: Record<Permission, string> = {
+  CREATE_MEMBERS: 'إدارة الأعضاء',
+  CHANGE_LAB_STATUS: 'حالة المقر',
+  MANAGE_EVENTS: 'إدارة الفعاليات',
+  VIEW_AUDIENCE: 'بيانات الجماهير',
+}
+
+export const LAB_STATUS_LABELS: Record<LabStatusValue, string> = {
+  red: 'مغلق',
+  yellow: 'يوجد اجتماع',
+  green: 'مفتوح',
+}
 
 export interface User {
   id: string
@@ -9,6 +29,9 @@ export interface User {
   role: UserRole
   phone: string | null
   is_active: boolean
+  is_super_admin: boolean
+  account_type: AccountType
+  username: string | null
   created_at: string
 }
 
@@ -57,6 +80,23 @@ export interface LabStatusReport {
   photos: string[] | null
   created_at: string
   users?: User
+}
+
+export interface LabStatus {
+  id: string
+  status: LabStatusValue
+  notes: string | null
+  changed_by: string | null
+  changed_at: string
+  users?: User
+}
+
+export interface MemberPermission {
+  id: string
+  user_id: string
+  permission: Permission
+  granted_by: string | null
+  created_at: string
 }
 
 export interface StorageCleanupLog {
